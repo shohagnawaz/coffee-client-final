@@ -1,10 +1,11 @@
 import { useLoaderData } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const UpdateCoffee = () => {
 
     const coffee = useLoaderData();
     const { _id, name, quantity, supplier, taste, category, details, photo } = coffee;
-    const handleAddCoffee = event => {
+    const handleUpdateCoffee = event => {
         event.preventDefault();
         const form = event.target;
         const name = form.name.value;
@@ -14,23 +15,23 @@ const UpdateCoffee = () => {
         const category = form.category.value;
         const details = form.details.value;
         const photo = form.photo.value;
-        const newCoffee = {name, quantity, supplier, taste, category, details, photo};
-        console.log(newCoffee)
+        const updateCoffee = {name, quantity, supplier, taste, category, details, photo};
+        console.log(updateCoffee)
         // send data to the server
-        fetch('http://localhost:5000/coffee', {
-            method: 'POST',
+        fetch(`http://localhost:5000/coffee/${_id}`, {
+            method: 'PUT',
             headers: {
                 'content-type': 'application/json'
             },
-            body: JSON.stringify(newCoffee)
+            body: JSON.stringify(updateCoffee)
         })
         .then(res => res.json())
         .then(data => {
             console.log(data);
-            if(data.insertedId){
+            if(data.modifiedCount > 0){
                 Swal.fire({
                     title: 'Success!',
-                    text: 'User added successfully',
+                    text: 'Coffee update successfully',
                     icon: 'success',
                     confirmButtonText: 'Cool'
                 })
@@ -41,7 +42,7 @@ const UpdateCoffee = () => {
     return (
         <div className="bg-[#F4F3F0] p-24">
             <h2 className='text-5xl text-center pb-8 text-pink-900'>Update Coffee: {name}</h2>
-            <form onSubmit={handleAddCoffee}>
+            <form onSubmit={handleUpdateCoffee}>
                 {/* Form row: name & quantity */}
                 <div className="md:flex mb-8">
                     <div className="form-control md:w-1/2">
@@ -50,7 +51,8 @@ const UpdateCoffee = () => {
                         </label>
                         <input 
                             type="text"
-                            name="name" 
+                            name="name"
+                            defaultValue={name} 
                             placeholder="Coffee Name" 
                             className="input input-bordered w-full" 
                         />
@@ -62,6 +64,7 @@ const UpdateCoffee = () => {
                         <input 
                             type="text" 
                             name="quantity"
+                            defaultValue={quantity}
                             placeholder="Quantity" 
                             className="input input-bordered w-full" 
                         />
@@ -75,7 +78,8 @@ const UpdateCoffee = () => {
                         </label>
                         <input 
                             type="text"
-                            name="supplier" 
+                            name="supplier"
+                            defaultValue={supplier} 
                             placeholder="Supplier Name" 
                             className="input input-bordered w-full" 
                         />
@@ -87,6 +91,7 @@ const UpdateCoffee = () => {
                         <input 
                             type="text" 
                             name="taste"
+                            defaultValue={taste}
                             placeholder="Taste" 
                             className="input input-bordered w-full" 
                         />
@@ -100,7 +105,8 @@ const UpdateCoffee = () => {
                         </label>
                         <input 
                             type="text"
-                            name="category" 
+                            name="category"
+                            defaultValue={category} 
                             placeholder="Coffee Name" 
                             className="input input-bordered w-full" 
                         />
@@ -112,6 +118,7 @@ const UpdateCoffee = () => {
                         <input 
                             type="text" 
                             name="details"
+                            defaultValue={details}
                             placeholder="Details" 
                             className="input input-bordered w-full" 
                         />
@@ -125,13 +132,14 @@ const UpdateCoffee = () => {
                         </label>
                         <input 
                             type="text"
-                            name="photo" 
+                            name="photo"
+                            defaultValue={photo} 
                             placeholder="Photo URL" 
                             className="input input-bordered w-full" 
                         />
                     </div>
                 </div>
-                <input type="submit" value="ADD COFFEE" className="btn btn-block mt-4" />
+                <input type="submit" value="UPDATE COFFEE" className="btn btn-block mt-4" />
             </form>
         </div>
     );
