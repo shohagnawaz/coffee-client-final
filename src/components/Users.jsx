@@ -37,7 +37,7 @@ const Users = () => {
                     </thead>
                     <tbody> 
                         {
-                            loadedUsers.map(user => (
+                            users.map(user => (
                                 <tr key={user._id}>
                                 <th>1</th>
                                 <td>{user.email}</td>
